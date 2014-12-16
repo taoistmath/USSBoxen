@@ -1,0 +1,154 @@
+#
+# Virtual Hosts
+#
+# If you want to maintain multiple domains/hostnames on your
+# machine you can setup VirtualHost containers for them. Most configurations
+# use only name-based virtual hosts so the server doesn't need to worry about
+# IP addresses. This is indicated by the asterisks in the directives below.
+#
+# Please see the documentation at 
+# <URL:http://httpd.apache.org/docs/2.2/vhosts/>
+# for further details before you try to setup virtual hosts.
+#
+# You may use the command line option '-S' to verify your virtual host
+# configuration.
+#
+# Use name-based virtual hosting.
+#
+<% if @project == "helios" or @project == "automation"-%>
+Listen 443
+NameVirtualHost *:443
+NameVirtualHost *:80
+<% end -%>
+#
+# VirtualHost example:
+# Almost any Apache directive may go into a VirtualHost container.
+# The first VirtualHost section is used for all requests that do not
+# match a ServerName or ServerAlias in any <VirtualHost> block.
+#
+
+#<VirtualHost *:80>
+#    ServerAdmin webmaster@dummy-host.example.com
+#    DocumentRoot "/usr/docs/dummy-host.example.com"
+#    ServerName dummy-host.example.com
+#    ServerAlias www.dummy-host.example.com
+#    ErrorLog "/private/var/log/apache2/dummy-host.example.com-error_log"
+#    CustomLog "/private/var/log/apache2/dummy-host.example.com-access_log" common
+#</VirtualHost>
+
+<% if @project == "fowl" or @project == "automation" -%>
+<VirtualHost *:80>
+    ServerName fowl.local
+    DocumentRoot "/Users/<%= @boxen_user %>/projects/fowl/www/public"
+    Include /private/etc/apache2/extra/dev_db.include
+    <Directory /Users/<%= @boxen_user %>/Sites/fowl/www/public>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+</VirtualHost>
+<% end -%>
+
+<% if @project == "helios" or @project == "automation"-%>
+<VirtualHost *:80>
+    ServerName dev.helios.local
+    DocumentRoot "/Users/<%= @boxen_user %>/Sites/helios/www/public"
+    Include /etc/apache2/extra/dev_db.include
+    Include /etc/apache2/extra/credentials.include 
+
+    # ProxyPass /product http://10.26.130.80:8280/product
+    # ProxyPassReverse /product http://10.26.130.80:8280/product
+
+    Alias /product /Users/<%= @boxen_user %>/Sites/helios/tools/regression/stubs/product
+    Alias /telesales /Users/<%= @boxen_user %>/Sites/helios/tools/regression/stubs/telesales
+
+    ProxyPass /json http://10.26.130.80:8280/json
+    ProxyPassReverse /json http://10.26.130.80:8280/json
+
+    # ProxyPass /telesales http://10.26.130.80:8180/telesales
+    # ProxyPassReverse /telesales http://10.26.130.80:8180/telesales
+
+    <Directory "/Users/<%= @boxen_user %>/Sites/helios/www/public">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+</VirtualHost>
+
+<VirtualHost *:443>
+    SSLEngine on
+    ServerName dev.helios.local
+
+    DocumentRoot "/Users/<%= @boxen_user %>/Sites/helios/www/public"
+    Include /private/etc/apache2/extra/dev_db.include
+
+    Alias /product /Users/<%= @boxen_user %>/Sites/helios/tools/regression/stubs/product
+    Alias /telesales /Users/<%= @boxen_user %>/Sites/helios/tools/regression/stubs/telesales 
+
+    #ProxyPass /product http://10.26.130.80:8280/product
+    #ProxyPassReverse /product http://10.26.130.80:8280/product
+
+    ProxyPass /json http://10.26.130.80:8280/json
+    ProxyPassReverse /json http://10.26.130.80:8280/json
+
+    #ProxyPass /telesales http://10.26.130.80:8180/telesales
+    #ProxyPassReverse /telesales http://10.26.130.80:8180/telesales
+
+    SSLCertificateFile /etc/apache2/certs/server.crt
+    SSLCertificateKeyFile /etc/apache2/certs/server.key
+
+    <Directory "/Users/<%= @boxen_user %>/Sites/helios/www/public">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot "/Users/<%= @boxen_user %>/Sites/verified/public"
+    ServerName dev.verified.local
+    ServerAlias dev.verified.local
+
+    ProxyPass /product http://10.26.130.80:8280/product
+    ProxyPassReverse /product http://10.26.130.80:8280/product
+    <Directory /Users/<%= @boxen_user %>/Sites/verified/public>
+        Options -Indexes FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    setEnv verified_id owl_verified
+    SetEnv owl_secret_key 937s8E25C939e82FB2CbD974BE9F6D2DC5z
+    SetEnv local_host "dev.verified.local"
+    SetEnv APP_ENV dev
+</VirtualHost>
+
+<VirtualHost *:443>
+    SSLEngine on
+    DocumentRoot "/Users/<%= @boxen_user %>/Sites/verified/public"
+    ServerName dev.verified.local
+    ServerAlias dev.verified.local
+    SSLCertificateFile /etc/apache2/certs/server.crt
+    SSLCertificateKeyFile /etc/apache2/certs/server.key
+    ProxyPass /product http://10.26.130.80:8280/product
+    ProxyPassReverse /product http://10.26.130.80:8280/product
+    <Directory /Users/<%= @boxen_user %>/Sites/verified/public>
+        Options -Indexes FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    setEnv verified_id owl_verified
+    SetEnv owl_secret_key 937s8E25C939e82FB2CbD974BE9F6D2DC5z
+    SetEnv local_host "dev.verified.local"
+    SetEnv APP_ENV dev
+</VirtualHost>
+<% end -%>
+

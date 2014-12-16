@@ -57,11 +57,31 @@ node default {
   include git
   include hub
   include nginx
-
-  # fail if FDE is not enabled
-  if $::root_encrypted == 'no' {
-    fail('Please enable full disk encryption and try again')
+ 
+  #Custom Includes:
+  include sublime_text::v2
+  sublime_text::v2::package { 'Emmet':
+    source => 'sergeche/emmet-sublime'
   }
+  include chrome
+  include firefox
+  include virtualbox
+  class { 'vagrant': 
+    version => '1.4.0'
+  }
+  include hipchat
+  include phpstorm
+  include tunnelblick
+  include jmeter
+  include rstudio
+  include vlc
+
+  include projects::infrasys
+  
+# fail if FDE is not enabled
+#  if $::root_encrypted == 'no' {
+#    fail('Please enable full disk encryption and try again')
+#  }
 
   # node versions
   nodejs::version { 'v0.6': }
@@ -88,4 +108,5 @@ node default {
     ensure => link,
     target => $boxen::config::repodir
   }
+
 }
