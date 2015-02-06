@@ -59,22 +59,22 @@ node default {
   include nginx
  
   #Custom Includes:
-  include sublime_text::v2
-  sublime_text::v2::package { 'Emmet':
-    source => 'sergeche/emmet-sublime'
-  }
-  include chrome
-  include firefox
-  include virtualbox
-  class { 'vagrant': 
-    version => '1.4.0'
-  }
-  include hipchat
-  include phpstorm
-  include tunnelblick
-  include jmeter
-  include rstudio
-  include vlc
+#  include sublime_text::v2
+#  sublime_text::v2::package { 'Emmet':
+#    source => 'sergeche/emmet-sublime'
+#  }
+#  include chrome
+#  include firefox
+#  include virtualbox
+#  class { 'vagrant': 
+#    version => '1.4.0'
+#  }
+#  include hipchat
+#  include phpstorm
+#  include tunnelblick
+#  include jmeter
+#  include rstudio
+#  include vlc
 
   include projects::infrasys
   

@@ -2,7 +2,7 @@ class projects::helios {
 
   $project = 'helios'
 
-  include mongodb
+  #include mongodb
 
   # Clone the repos
   repository {
@@ -25,7 +25,7 @@ class projects::helios {
     content => template('apache/credentials.erb'),
   }
 
-  file { "/etc/apache2/extra/httpd-vhosts":
+  file { "/etc/apache2/extra/httpd-vhosts.conf":
     ensure  => file,
     content => template('apache/httpd-vhosts.erb'),
   }

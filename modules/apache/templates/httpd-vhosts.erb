@@ -41,7 +41,7 @@ NameVirtualHost *:80
     ServerName fowl.local
     DocumentRoot "/Users/<%= @boxen_user %>/projects/fowl/www/public"
     Include /private/etc/apache2/extra/dev_db.include
-    <Directory /Users/<%= @boxen_user %>/Sites/fowl/www/public>
+    <Directory /Users/<%= @boxen_user %>/projects/fowl/www/public>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
         Order allow,deny

@@ -2,7 +2,7 @@ class projects::automation {
 
   $project = 'automation'
 
-  include mongodb
+  #include mongodb
 	
   # Clone the repos
   repository {
@@ -37,9 +37,14 @@ class projects::automation {
 
   }
 
-#  file { "/etc/apache2/extra/credentials.include":
-#    ensure  => file,
-#    content => template('apache/credentials.erb'),
-#  }
+  file { "/etc/apache2/extra/credentials.include":
+    ensure  => file,
+    content => template('apache/credentials.erb'),
+  }
+
+  file { "/etc/apache2/extra/httpd-vhosts.conf":
+    ensure  => file,
+    content => template('apache/httpd-vhosts.erb'),
+  }
 
 }

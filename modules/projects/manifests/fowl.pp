@@ -12,7 +12,7 @@ class projects::fowl {
     path => "${boxen::config::srcdir}/projects/fowl",
   }
   
-  file { "/etc/apache2/extra/httpd-vhosts":
+  file { "/etc/apache2/extra/httpd-vhosts.conf":
     ensure  => file,
     content => template('apache/httpd-vhosts.erb'),
   }
