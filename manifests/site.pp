@@ -63,7 +63,6 @@ node default {
   sublime_text::v2::package { 'Emmet':
     source => 'sergeche/emmet-sublime'
   }
-  include chrome
   include firefox
   include virtualbox
   class { 'vagrant': 
