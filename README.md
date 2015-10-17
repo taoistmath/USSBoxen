@@ -317,5 +317,3 @@ you will need to set the `BOXEN_GITHUB_ENTERPRISE_URL` and
 See [FAQ](https://github.com/boxen/our-boxen/blob/master/docs/faq.md).
 
 Use Issues or #boxen on irc.freenode.net.
-
-This is a test
